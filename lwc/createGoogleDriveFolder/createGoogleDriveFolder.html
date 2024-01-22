@@ -1,0 +1,15 @@
+<!--
+  @description       : 
+  @author            : Ranjeet@hicglobalsolutions.com
+  @group             : 
+  @last modified on  : 11-15-2023
+  @last modified by  : Ranjeet@hicglobalsolutions.com
+-->
+<template>
+    <lightning-card title="Create Google Drive Folder">
+        <div class="slds-p-around_medium">
+            <lightning-input label="Folder Name" value={folderName} onchange={handleFolderNameChange}></lightning-input>
+            <lightning-button label="Create Folder" onclick={handleCreateFolder}></lightning-button>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,20 @@
+<!--
+  @description       : 
+  @author            : Ranjeet@hicglobalsolutions.com
+  @group             : 
+  @last modified on  : 11-09-2023
+  @last modified by  : Ranjeet@hicglobalsolutions.com
+-->
+<template>
+  
+  <lightning-card style="background-color: orange;" title="External System to integrate.">
+   
+     <template if:true={externalOptions}>
+         <lightning-combobox class="slds-m-around_medium" label="Please choose the party you wish to integrate with." value={selectedIntegrationWith} options={integrationwith} onchange={handleTypeChange}></lightning-combobox>
+     </template>
+       <!-- Show relevant Component based on the selected External System -->
+     <template if:true={others}>
+       <lightning-input class="text slds-m-around_medium" type="text" label="Platform Name" placeholder="Please Enter Your System Name..." value = {systemName} required onchange={handleSystemNameChange}></lightning-input>
+     </template>
+  </lightning-card>
+</template>

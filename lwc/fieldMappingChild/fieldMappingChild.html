@@ -1,0 +1,47 @@
+<template>
+    <lightning-layout multiple-rows="true" class="slds-m-around_small">
+        <lightning-layout-item size="4">
+            {objectName}
+        </lightning-layout-item>
+        <lightning-layout-item size="4">
+            <lightning-input type="toggle" checked={useDefault} onchange={handleDefaultMapping} label="DEFAULT MAPPING"></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="4">
+            <lightning-icon icon-name="utility:chevronup" alternative-text="Approved" lwc:if={openTable} onclick={openCloseTable} style="float:right;"></lightning-icon>
+            <lightning-icon icon-name="utility:chevrondown" alternative-text="Approved" lwc:else onclick={openCloseTable} style="float:right;"></lightning-icon>
+        </lightning-layout-item>
+    </lightning-layout>
+        <template if:true={isrequriedFieldOptionsLoaded}>
+            <h2 class="slds-p-around_medium">REQUIRED FIELDS</h2>
+            <template for:each={requiredMapping} for:item="acc" for:index="index">
+                <lightning-layout multiple-rows="true" key={acc.Id}>
+                    <lightning-layout-item padding="around-small" size="4">
+                        <lightning-combobox label="SELECT ANY FIELD" options={requiredMapping} value={acc.value} data-value={acc.Id} onchange={handleFieldChange}></lightning-combobox>
+                    </lightning-layout-item>
+                    
+                    <lightning-layout-item padding="around-small" size="4">
+                        <lightning-combobox label="SELECT ANY FIELD" options={responseFields} value={systemValue} data-value={acc.Id} onchange={handleCategorizedFieldsChange}></lightning-combobox>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </template>
+        
+        <template if:true={isfieldOptionsLoaded}>
+            <h2 class="slds-p-around_medium">OPTIONAL FIELDS</h2>
+            <template for:each={salesforceFields} for:item="acc" for:index="index">
+                <lightning-layout multiple-rows="true" key={acc.Id}>
+                    <lightning-layout-item padding="around-small" size="4">
+                        <lightning-combobox label="SELECT ANY FIELD" options={salesforceFields} value={acc.value} data-value={acc.Id} onchange={handleFieldChange}></lightning-combobox>
+                    </lightning-layout-item>
+                    
+                    <lightning-layout-item padding="around-small" size="4">
+                        <lightning-combobox label="SELECT ANY FIELD" options={responseFields} value={systemValue} data-value={acc.Id} onchange={handleCategorizedFieldsChange}></lightning-combobox>
+                    </lightning-layout-item>
+                    
+                    <lightning-layout-item padding="around-small" size="1" style="align-self: self-end;">
+                        <lightning-icon icon-name="action:delete" alternative-text="Approved" onclick={deleteObjectRow} data-value={acc.Id}></lightning-icon>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </template>
+</template>

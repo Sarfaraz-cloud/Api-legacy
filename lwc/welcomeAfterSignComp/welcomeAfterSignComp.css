@@ -1,0 +1,10 @@
+.success-icon {
+    --sds-c-icon-color-foreground-default: green !important;
+}
+.box {
+    border-radius: 20px;
+}
+.button-style {
+    background-color: green;
+    color : white;
+}

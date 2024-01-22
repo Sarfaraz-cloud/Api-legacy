@@ -1,0 +1,11 @@
+.dummy{
+	color : black;
+}
+ .stepbar{
+	pointer-events: none;
+} 
+.unclickable-step {
+	
+    pointer-events: none;
+   
+}

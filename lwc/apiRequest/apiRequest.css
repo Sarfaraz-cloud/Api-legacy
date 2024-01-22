@@ -1,0 +1,9 @@
+.button-algin{
+    align-self: self-end;
+}
+.text-label{
+    position:absolute;
+}
+.addButton-width{
+    width: 5%;
+}

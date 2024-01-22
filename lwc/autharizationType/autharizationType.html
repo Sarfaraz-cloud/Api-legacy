@@ -1,0 +1,118 @@
+<!--
+  @description       : 
+  @author            : Ranjeet@hicglobalsolutions.com
+  @group             : 
+  @last modified on  : 10-11-2023
+  @last modified by  : Ranjeet@hicglobalsolutions.com
+-->
+<template>
+  <lightning-card title="Athorization Settings">
+  <div class="slds-m-around_medium">
+      <lightning-combobox label="Authorization Type" options={authTypes} value={selectedAuthType} onchange={handleAuthTypeChange} required></lightning-combobox>
+      <template if:true={isOAuth2Selected}>
+          <lightning-card title="Configure New Token" >
+          <lightning-input label="Token Name" value={tokenName} onchange={handleInputChange} required></lightning-input>
+          <lightning-combobox label="Grant Type" options={grantTypeOptions} value={selectedGrantType} onchange={handleGrantTypeChange} required></lightning-combobox>
+          <template if:true={isAuthorizationCodeSelected}>
+          <lightning-input label="Callback URL" value={callbackURL} onchange={handleCallbackURLChange} required></lightning-input>
+          <lightning-input label="Authentication URL" value={authURL} onchange={handleAuthURLChange} required></lightning-input>
+          <lightning-input label="Access Token URL" value={accessTokenURL} onchange={handleAccessTokenURLChange} required></lightning-input>
+          <lightning-input label="Client ID" value={clientId} onchange={handleClientIdChange} required></lightning-input>
+          <lightning-input label="Client secret" value={clientSecret} onchange={handleClientSecretChange} required></lightning-input>
+          <lightning-input label="Scope" value={scope} onchange={handleScopeChange} required></lightning-input> 
+          <lightning-input label="State" value={state} onchange={handleStateChange}></lightning-input>
+          <!-- <lightning-input label="accessToken" value={accessToken} onchange ={handleAccessTokenChange}></lightning-input> -->
+          <!-- <lightning-input label="RefreshToken" value={refreshToken} onchange ={handleRefreshTokenChange} ></lightning-input> -->
+        
+        </template>
+      
+      <template if:true={isAuthorizationCodeWithPkSelected}>
+          <lightning-input label="Callback URL" value={callbackURL} onchange={handleCallbackURLChange} required></lightning-input>
+          <lightning-input label="Authentication URL" value={authURL} onchange={handleAuthURLChange} required></lightning-input>
+          <lightning-input label="Access Token URL" value={accessTokenURL} onchange={handleAccessTokenURLChange} required></lightning-input>
+          <lightning-input label="Client ID" value={clientId} onchange={handleClientIdChange} required></lightning-input>
+          <lightning-input label="Client secret" value={clientSecret} onchange={handleClientSecretChange} required></lightning-input>
+          <lightning-combobox label="Code Challenge Method" options={codeChallengeMethodOptions} value={selectedcodeChallengeMethod} onchange={handlecodeChallengeMethod}></lightning-combobox>
+          <lightning-input label="Code Verifier" value={codeVerifier} onchange={handleInputChange} required></lightning-input>
+          <lightning-input label="Scope" value={scope} onchange={handleScopeChange} required></lightning-input> 
+      </template>
+
+      <template if:true={isClientCredentialSelected}>
+          <lightning-input label="Access Token URL" value={accessTokenURL} onchange={handleAccessTokenURLChange} required></lightning-input>
+          <lightning-input label="Client ID" value={clientId} onchange={handleClientIdChange} required></lightning-input>
+          <lightning-input label="Client secret" value={clientSecret} onchange={handleClientSecretChange} required></lightning-input>           
+          <lightning-input label="Scope" value={scope} onchange={handleInputChange}></lightning-input>
+          <lightning-input label="State" value={state} onchange={handleStateChange}></lightning-input>
+      </template>
+      
+       <template if:true={isImplicitSelected}>
+          <lightning-input label="Callback URL" value={callbackURL} onchange={handleInputChange} required></lightning-input>
+          <lightning-input label="Authentication URL" value={authURL} onchange={handleInputChange} required></lightning-input>
+          <lightning-input label="Client ID" value={clientId} onchange={handleInputChange} required></lightning-input>
+          <lightning-input label="Scope" value={scope} onchange={handleScopeChange}></lightning-input>
+      </template> 
+
+       <template if:true={isPasswordCredentialsSelected}>
+          <lightning-input label="Access Token URL" value={accessTokenURL} onchange={handleAccessTokenURLChange} required></lightning-input>
+          <lightning-input label="Client ID" value={clientId} onchange={handleClientIdChange} required></lightning-input>
+         <lightning-input label="Client secret" value={clientSecret} onchange={handleClientSecretChange} required></lightning-input>     
+          <lightning-input label="Username" value={username} onchange={handleInputUserNameChange} required></lightning-input>
+          <lightning-input type="password" label="Password" value={password} onchange={handleInputPasswordChange} required></lightning-input>
+          <lightning-input label="Scope" value={scope} onchange={handleScopeChange}></lightning-input>
+        </template>
+        <div if:true={accessToken}>
+          <lightning-textarea name="Access Token" readonly value={accessToken} label="Access Token"></lightning-textarea>
+        </div>
+        <div if:true={refreshToken}>
+          <lightning-textarea name="Refresh Token" readonly value={refreshToken} label="Refresh Token"></lightning-textarea>
+        </div>
+        <div if:true={accessTokenError}>
+          <lightning-textarea name="Response Body" readonly value={accessTokenError} label="Response Body"></lightning-textarea>
+        </div>
+        <div class="slds-p-top_xxx-small">
+            <lightning-button label="Clear Cookies" onclick={handleClearCookies}></lightning-button>
+            <c-oauth-l-w-c
+              callback-u-r-l={callbackURL}
+              access-token-u-r-l={accessTokenURL}
+              client-id={clientId}
+              client-secret={clientSecret}
+              grant-type={selectedGrantType}
+              selected-auth-type ={selectedAuthType}
+              auth-u-r-l={authURL}
+              scope={scope}
+              state={state}
+              user-name={username}
+              password={password}
+              system-name={systemName}
+              config-record-id={configRecordId}
+              api-request-u-r-l={apiRequestURL}
+              old-access-token={accessToken}
+              old-refresh-token={oldRefreshToken}
+              old-response={oldResponse}
+              onauthlwcpagehandle={handleinserconfigdata}
+              onsendtokens={getTokens}
+            ></c-oauth-l-w-c>
+          </div>
+          </lightning-card>
+        </template>
+      <template if:true={isApiKeySelected}>
+                  <lightning-card title="Api Key" >
+                  <lightning-input label="Key" value={apikey} onchange={handleInputChange} required></lightning-input>
+                  <lightning-input label="Value" value={value} onchange={handleInputChange} required></lightning-input>
+                  <lightning-combobox label="Add to"  value={add}  options={addToOptions} onchange={handleChange} ></lightning-combobox>
+                </lightning-card>
+      </template>
+      <template if:true={isBearertokenSelected}>
+                  <lightning-card title="Bearer token" ></lightning-card>
+                  <lightning-input label="Token" value={tokenvalue} onchange={handleInputChange} required></lightning-input>
+      </template>
+      <template if:true={isBasicAuthSelected}>
+                   <lightning-card title="Basic Auth">
+                   <lightning-input label="Username" value={username} onchange={handleInputUserNameChange} required></lightning-input>
+                   <lightning-input label="Password" value={password} onchange={handleInputPasswordChange} required></lightning-input>
+                    
+                   </lightning-card>
+      </template>
+   </div>
+ </lightning-card>
+</template>

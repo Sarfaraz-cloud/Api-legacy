@@ -1,0 +1,93 @@
+<!--
+  @description       : 
+  @author            : Ranjeet@hicglobalsolutions.com
+  @group             : 
+  @last modified on  : 11-09-2023
+  @last modified by  : Ranjeet@hicglobalsolutions.com
+-->
+<template>
+    <lightning-card>
+      <lightning-layout multiple-rows="true">
+        <lightning-layout-item size="12">
+          <lightning-progress-indicator current-step={usercurrentvalue} type="path" variant="shaded">
+                  <template for:each={optionList} for:item="optn">
+                      <lightning-progress-step key={optn.label} 
+                                               label={optn.label} 
+                                               value={optn.value} 
+                                               onclick={nextPage} 
+                                               onmouseover={handleProgressBar}>
+                      </lightning-progress-step>
+                  </template>
+              </lightning-progress-indicator>
+        </lightning-layout-item>
+  
+        <lightning-layout-item size="12">
+          <template if:true={homepage}>
+                      <c-homepage 
+                      lwc:ref ="autharizationType"
+                     onhomepageevent ={homePageEvent}
+                     alldatatocarry={allDataToCarry}>                            
+                     </c-homepage>
+          </template>
+        </lightning-layout-item>
+
+
+
+           <lightning-layout-item size="12">
+              <!-- </template> -->
+              <template if:true={autharizationType}>
+                  <c-autharization-type  
+                      lwc:ref = "oauthLWC"
+                      onauthpageevent={authPageEvent}
+                      alldatatocarry={allDataToCarry}> 
+              </c-autharization-type>
+              </template>
+           </lightning-layout-item>
+
+           <!-- <lightning-layout-item size="12"> -->
+            <!-- </template> -->
+              <!-- <div if:true={objectMappingComponent}> -->
+        <lightning-layout-item   size="12">
+                  <template if:true={apiRequest}>
+                  <c-api-request
+                          lwc:ref = "fieldMapping"
+                          onapirequestpageevent={apiRequestPageEvent}
+                          alldatatocarry={allDataToCarry}>
+                  </c-api-request>
+                  </template>
+        </lightning-layout-item>
+         <lightning-layout-item size="12">
+                <template if:true={fieldMapping}>
+                  <c-field-mapping
+                  onfieldmappingevent ={fieldMappingEventHandle}
+                  alldatatocarry={allDataToCarry}>
+                </c-field-mapping>
+                </template>
+         </lightning-layout-item>
+
+
+
+          <lightning-layout-item size="12">
+                <div if:true={cronMaker}>
+                 <c-cron-maker></c-cron-maker>
+                </div>
+        </lightning-layout-item>
+        
+
+
+        <lightning-layout-item size="12">
+              <div class="slds-m-around_small">
+                  <span class="slds-align_absolute-center">
+                      <lightning-button icon-name="utility:back" icon-position="left"  variant="success" label="Go to the previous page" title="Go to the previous page" disabled={PreDisableButton} onclick={previousPage} if:false={hideLeftButton}></lightning-button>
+                      <lightning-button icon-name="utility:forward" icon-position="right" variant="success" label="Go to the next step" title="Go to the next step" disabled={goDisableButton} onclick={nextPage} if:false={hideRightButton}></lightning-button>
+                     
+  
+                 </span>
+                  <span class="slds-align_absolute-center">
+                      <span style="color:red">*</span>Don't worry you can change the steps later.
+                  </span>
+              </div>
+          </lightning-layout-item>
+      </lightning-layout>
+    </lightning-card>
+  </template>

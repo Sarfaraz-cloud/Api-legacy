@@ -1,0 +1,207 @@
+<!--
+  @description       : 
+  @author            : Ranjeet@hicglobalsolutions.com
+  @group             : 
+  @last modified on  : 11-07-2023
+  @last modified by  : Ranjeet@hicglobalsolutions.com
+-->
+<template>
+  <lightning-card title="API Request Types">
+   <div class="test slds-m-around_medium">
+        <template if:true={enableSpinner}>
+      <lightning-spinner
+        alternative-text="Loading"
+        size="medium"
+      ></lightning-spinner>
+    </template>
+    <div class="slds-form-element">
+      <div class="slds-grid slds-gutters">
+        <lightning-combobox
+          name="Methods"
+          class="slds-col slds-size_2-of-8"
+          label="Method"
+          value={value}
+          placeholder="Select Method"
+          options={methodOptions}
+          onchange={handleMethodChange}
+        ></lightning-combobox>
+
+        <lightning-input
+          type="text"
+          class="slds-col slds-size_5-of-8"
+          label="URL:"
+          value={url}
+          placeholder={urlPlcaeHolder}
+          onchange={handleUrlChange}
+        ></lightning-input>
+
+        <lightning-button
+          class="slds-col slds-size_1-of-8 button-algin"
+          label="Send"
+          onclick={handleSendRequest}
+        ></lightning-button>
+      </div>
+      <div class="slds-p-top_xxx-small">
+        <lightning-button
+          variant={buttonColor}
+          label="Headers"
+          onclick={handleHeadersButtonClick}
+        ></lightning-button>
+        <lightning-button
+          variant={bodyButtonColor}
+          class="slds-p-left_x-small"
+          label="Body"
+          onclick={handleBodyButtonClick}
+        ></lightning-button>
+        <lightning-button
+          variant={paramButtonColor}
+          class="slds-p-left_x-small"
+          label="Params"
+          onclick={handleQueryParamsButtonClick}
+        ></lightning-button>
+      </div>
+
+      <template if:true={showHeaders}>
+        <span class="slds-p-around_x-small text-label">Header:</span>
+        <template for:each={headersList} for:item="header">
+          <div key={header.id}>
+            <lightning-layout multiple-rows="true">
+              <lightning-layout-item size="5" class="slds-p-around_x-small">
+                <lightning-input
+                  type="text"
+                  value={header.key}
+                  placeholder="Key"
+                  data-id={header.id}
+                  onchange={handleHeadersKeyChange}
+                ></lightning-input>
+              </lightning-layout-item>
+              <lightning-layout-item size="5" class="slds-p-around_x-small">
+                <lightning-input
+                  type="text"
+                  value={header.value}
+                  placeholder="Value"
+                  data-id={header.id}
+                  onchange={handleHeadersValueChange}
+                ></lightning-input>
+              </lightning-layout-item>
+              <lightning-layout-item
+                size="2"
+                class="slds-p-around_x-small button-algin"
+              >
+                <lightning-button-icon
+                  icon-name="utility:delete"
+                  title="Remove Header"
+                  alternative-text="Delete"
+                  onclick={handleRemoveClick}
+                  variant="destructive"
+                ></lightning-button-icon>
+              </lightning-layout-item>
+            </lightning-layout>
+          </div>
+        </template>
+        <lightning-layout multiple-rows="true">
+          <lightning-layout-item size="6">
+            <lightning-button-icon
+              class="slds-align_absolute-center addButton-width"
+              icon-name="utility:add"
+              title="Add Header"
+              alternative-text="Add"
+              onclick={handleAddClick}
+              variant="brand"
+            ></lightning-button-icon>
+          </lightning-layout-item>
+          <lightning-layout-item size="2"> </lightning-layout-item>
+        </lightning-layout>
+      </template>
+
+      <template if:true={showQueryParams}>
+        <span class="slds-p-around_x-small text-label">Query Parameter:</span>
+        <template for:each={queryParamsList} for:item="param">
+          <div key={param.id}>
+            <lightning-layout multiple-rows="true">
+              <lightning-layout-item size="5" class="slds-p-around_x-small">
+                <lightning-input
+                  type="text"
+                  value={param.key}
+                  data-id={param.id}
+                  onchange={handleParamKeyChange}
+                  placeholder="Key"
+                ></lightning-input>
+              </lightning-layout-item>
+              <lightning-layout-item size="5" class="slds-p-around_x-small">
+                <lightning-input
+                  type="text"
+                  value={param.value}
+                  data-id={param.id}
+                  onchange={handleParamValueChange}
+                  placeholder="Value"
+                ></lightning-input>
+              </lightning-layout-item>
+              <lightning-layout-item
+                size="2"
+                class="slds-p-around_x-small button-algin"
+              >
+                <lightning-button-icon
+                  icon-name="utility:delete"
+                  title="Remove Query Param"
+                  alternative-text="Delete"
+                  onclick={handleRemoveQueryParamClick}
+                  variant="destructive"
+                ></lightning-button-icon>
+              </lightning-layout-item>
+            </lightning-layout>
+          </div>
+        </template>
+        <lightning-layout multiple-rows="true">
+          <lightning-layout-item size="10">
+            <lightning-button-icon
+              class="slds-align_absolute-center addButton-width"
+              icon-name="utility:add"
+              title="Add Query Param"
+              alternative-text="Add"
+              onclick={handleAddQueryParamClick}
+              variant="brand"
+            ></lightning-button-icon>
+          </lightning-layout-item>
+          <lightning-layout-item size="2"> </lightning-layout-item>
+        </lightning-layout>
+      </template>
+
+      <template if:true={showBody}>
+        <lightning-textarea
+          name="Request Body:"
+          type="text"
+          value={requestBody}
+          label="Request Body:"
+          onchange={handleRequestBodyChange}
+        ></lightning-textarea>
+      </template>
+     
+      <div if:true={response}>
+      
+        <lightning-textarea
+          name="Json Response"
+          readonly
+          value={response}
+          label="Response Data"
+          onclick ={handleError}
+        ></lightning-textarea>
+      </div>
+      <div if:true={accessTokenError}>
+        <lightning-textarea name="Response Body" readonly value={accessTokenError} label="Response Body"></lightning-textarea>
+      </div>
+    </div>
+    <template if:true={openfieldMapping}>
+      
+      <!-- <c-field-mapping
+        json-response={fieldResponse}
+        config-record-id={configRecordId}
+        old-responsedata={oldResponsedata}
+        ongetspinnervalue={spinnerHandler}
+        lwc:ref="fieldMapping"
+      ></c-field-mapping> -->
+    </template>
+   </div>
+    
+  </lightning-card>
+</template>

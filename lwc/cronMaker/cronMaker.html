@@ -1,0 +1,94 @@
+<template>
+   <lightning-card title="Schedule Criteria">
+      <div class="slds-m-around_medium">
+         <lightning-input type="text" label="Enter your Job Name" onchange={handleInputChange}></lightning-input>
+
+      <br>
+
+         <lightning-radio-group options={particularTimeOrMultipleTime} value={value} onchange={handleChangeRadio} type="button"></lightning-radio-group>
+
+         <template if:true={forParticularTime}>
+            <lightning-combobox style="width:20%;" options={mainOptions} value="Every Year" onchange={handleMainComboChange}></lightning-combobox>
+
+            <template if:true={yearInput}>
+               <lightning-combobox name="Specified Year :" label="Specified Year :" value={selectedYear} options={yearOptions} onchange={handleYearChange}></lightning-combobox>
+            </template>
+
+            <div style="display: flex;">
+               <div style="flex: 1; margin-right: 10px;">
+                  <template if:true={yearDuration}>
+                  </br>
+                     <lightning-combobox name="From : " label="From : " value={selectedFromYear} options={yearOptions} onchange={handleYearChange}></lightning-combobox>
+                  </template>
+               </div>
+               <div style="flex: 1;margin-left: 10px;">
+                  <template if:true={yearDuration}>
+                  <br>
+                     <lightning-combobox name="To : " label="To : " value={selectedToYear} options={yearRangeOptions} onchange={handleYearChange}></lightning-combobox>
+                  </template>
+               </div>
+            </div>
+
+            <lightning-combobox options={everyMonthOrSelectedMonth} value="Every Month"></lightning-combobox>
+         
+
+            <lightning-radio-group options={dayOfMonthOrDayOfWeek} value="Day Of Month" onchange={handleChangeRadio1} type="button"></lightning-radio-group>
+
+            <template if:true={dayOfMonth}>
+               <lightning-combobox options={dailyOrSelectedDay} value="Daily"></lightning-combobox>
+            </template>
+
+            <div style="display: flex;">
+               <div style="flex: 1; margin-right: 10px;">
+                  <template if:true={dayOfWeek}>
+                     <lightning-combobox value="1st" options={weekSelection} onchange={handleYearChange}></lightning-combobox>
+                  </template>
+               </div>
+               <div style="flex: 1;">
+                  <template if:true={dayOfWeek}>
+                     <lightning-combobox value="Sunday" options={daySelection} onchange={handleYearChange}></lightning-combobox>
+                  </template>
+               </div>
+            </div>
+
+            <br>
+
+            <div class="slds-col slds-p-bottom_medium">
+               <span>
+                  <input style="width:10%;" type="number" placeholder="HH" min="0" max="23" id="hours" class="slds-select inputYearClass" value={hours} oninput={handleHourChange} />: <input style="width:10%;" type="number" placeholder="MM" min="0" max="59" id="minutes" class="slds-select inputYearClass" value={minutes} oninput={handleMinuteChange} />: <input style="width:10%;" type="number" placeholder="SS" min="0" max="59" id="seconds" class="slds-select inputYearClass" value={seconds} oninput={handleSecondChange} />
+               </span>
+            </div>
+         </template>
+
+         <template if:true={forMultipleTimes}>
+            <div class="slds-m-vertical_medium">
+               <label for="appt">Repeat in every : </label>
+               <span>
+                  <input style="width:10%;" type="number" placeholder="HH" min="0" max="23" id="hour" class="slds-select inputYearClass" value={hour} oninput={handleHourChange} />: <input style="width:10%;" type="number" placeholder="MM" min="0" max="59" id="minute" class="slds-select inputYearClass" value={minute} oninput={handleMinuteChange} />
+               </span>
+            </div>
+         </template>
+
+         <div class="slds-m-top_small slds-m-bottom_medium">
+            <h2 class="slds-text-heading_small slds-m-bottom_small"></h2>
+            <lightning-button variant="success" label="Schedule" title="Successful action" onclick={handleClick} class="slds-m-center_x-small"></lightning-button>
+            <p>{jobId}</p>
+         </div>
+      </div>
+   </lightning-card>
+
+   <section if:true={showModal}>
+      
+      <div class="slds-backdrop slds-backdrop_open"></div>
+      <div role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+         <div class="slds-modal__container">
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+               <p>{output}</p>
+            </div>
+            <footer class="slds-modal__footer">
+               <lightning-button label="Copy Text" title="Non-primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button> &nbsp; <lightning-button label="Close" onclick={closeModal}></lightning-button>
+            </footer>
+         </div>
+      </div>
+   </section>
+</template>

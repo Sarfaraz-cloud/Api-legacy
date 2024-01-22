@@ -1,0 +1,38 @@
+<!--
+@description       : 
+@author            : Ranjeet@hicglobalsolutions.com
+@group             : 
+@last modified on  : 11-07-2023
+@last modified by  : Ranjeet@hicglobalsolutions.com
+-->
+<template>
+  <lightning-card>
+    <lightning-layout multiple-rows="true">
+      <lightning-layout-item size="12">
+        <lightning-progress-indicator
+          current-step="homepage"
+          type="path"
+          variant="base"
+        >
+          <template for:each={steps} for:item="step">
+            <lightning-progress-step
+              label={step.label}
+              value={step.value}
+              key={step.label}
+            ></lightning-progress-step>
+          </template>
+        </lightning-progress-indicator>
+      </lightning-layout-item>
+
+      <lightning-layout-item size="12">
+        <div>
+          <c-homepage if:true={setupComponent}> </c-homepage>
+        </div>
+        <div>
+          <c-autharization-type if:true={setupComponent}>
+          </c-autharization-type>
+        </div>
+      </lightning-layout-item>
+    </lightning-layout>
+  </lightning-card>
+</template>
