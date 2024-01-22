@@ -77,7 +77,7 @@ export default class FieldMapping extends LightningElement {
       console.log('allconfigId==78==>',this.configRecordId);
     }
     if (newResponse) {
-      console.log('this is json response data:==> ' + newResponse);
+     // console.log('this is json response data:==> ' + newResponse);
     }
     this.handleResponse(newResponse);
     console.log("this.configRecordId==>>", this.configRecordId);
